@@ -8,7 +8,7 @@ portafolios mediante una extension de Black-Litterman.
 
 | Fase | Contenido | Estado |
 |---|---|---|
-| 0 | Repositorio, entorno, CI, guards de arquitectura | **en curso** |
+| 0 | Repositorio, entorno, CI, guards de arquitectura | **completa** |
 | 1 | Contratos de datos, provider sintetico, store point-in-time | pendiente |
 | 2 | Capa de opciones y motor de calidad | pendiente |
 | 3 | Motor de superficie de volatilidad | pendiente |

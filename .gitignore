@@ -46,3 +46,6 @@ build/
 
 # ---- macOS
 .DS_Store
+
+# ---- restos del puente de archivos (borrar a mano)
+_to_delete/
