@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Instalar dependencias
+        run: uv sync --group dev
+
+      - name: Lint
+        run: uv run ruff check src tests
+
+      - name: Formato
+        run: uv run ruff format --check src tests
+
+      - name: Tipos
+        run: uv run mypy
+
+      # Los tests que requieren datos con licencia no pueden correr aqui.
+      # Por eso el checkpoint V1 (momentos sinteticos) es el unico control
+      # fuerte que se ejecuta automaticamente en cada push.
+      - name: Tests
+        run: uv run pytest -m "not needs_data" --cov=finvex --cov-report=term-missing

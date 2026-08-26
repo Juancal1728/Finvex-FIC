@@ -1,0 +1,48 @@
+# ---- entorno
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.python-version
+
+# ---- IDE
+.idea/
+.vscode/
+*.iml
+
+# ---- datos: NUNCA entran al repositorio
+data/*
+!data/CATALOG.md
+*.parquet
+*.csv
+*.h5
+*.pkl
+
+# ---- corridas y salidas generadas
+runs/*
+!runs/.gitkeep
+outputs/*
+!outputs/paper/
+outputs/paper/*
+!outputs/paper/.gitkeep
+
+# ---- secretos
+.env
+*.pem
+*.key
+
+# ---- herramientas
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# ---- notebooks
+.ipynb_checkpoints/
+
+# ---- macOS
+.DS_Store

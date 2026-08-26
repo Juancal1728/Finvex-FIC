@@ -1,0 +1,33 @@
+# Configuracion base: lo que casi nunca cambia.
+# Los parametros de investigacion viven en los archivos especificos
+# (universe/, surface/, moments/, econometrics/, experiment/).
+
+project:
+  name: finvex-fic
+  version: "0.0.1"
+
+paths:
+  data_root: ${FINVEX_DATA_ROOT}
+  runs_root: ${FINVEX_RUNS_ROOT}
+
+conventions:
+  # Ver CLAUDE.md e invariante I2 del blueprint. Cambiar cualquiera de estos
+  # valores invalida toda comparacion con resultados anteriores.
+  implied_volatility: decimal_annualized
+  time_to_expiry: minutes_over_525600
+  settlement_time:
+    AM: "09:30"
+    PM: "16:00"
+  settlement_timezone: America/New_York
+  rates: continuous
+  moneyness: log_k_over_f
+  price_units: index_points
+  portfolio_returns: simple
+  realized_moment_returns: log
+  storage_timezone: UTC
+  moments_standardized: true
+  kurtosis_is_excess: false
+
+reproducibility:
+  require_clean_git_tree: true
+  seed: 20260826
