@@ -23,6 +23,12 @@ CLOCK_EXEMPT = {
 
 FORBIDDEN_ATTRS = {"now", "today", "utcnow"}
 
+# `default_rng` y `Generator` son la forma correcta de obtener aleatoriedad
+# explicita y reproducible: crean un generador propio en vez de mutar el
+# estado global de numpy. Lo que se prohibe es el resto de `np.random.*`, que
+# es la interfaz heredada y comparte un estado invisible entre modulos.
+RANDOM_ATTRIBUTES_ALLOWED = {"default_rng", "Generator", "SeedSequence", "PCG64"}
+
 
 def _rel(path: pathlib.Path) -> str:
     return path.relative_to(SRC).as_posix()
@@ -57,9 +63,10 @@ def test_no_global_numpy_random() -> None:
                 and isinstance(node.value, ast.Attribute)
                 and node.value.attr == "random"
                 and getattr(node.value.value, "id", None) in {"np", "numpy"}
+                and node.attr not in RANDOM_ATTRIBUTES_ALLOWED
             ):
                 violations.append(f"{_rel(path)}:{node.lineno} usa np.random.{node.attr}")
     assert not violations, (
-        "Aleatoriedad global. Usa un numpy.random.Generator explicito:\n  "
-        + "\n  ".join(violations)
+        "Aleatoriedad del estado global de numpy. Crea un Generator explicito "
+        "con np.random.default_rng(semilla) y pasalo como argumento:\n  " + "\n  ".join(violations)
     )

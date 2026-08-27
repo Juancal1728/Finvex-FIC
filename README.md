@@ -9,7 +9,7 @@ portafolios mediante una extension de Black-Litterman.
 | Fase | Contenido | Estado |
 |---|---|---|
 | 0 | Repositorio, entorno, CI, guards de arquitectura | **completa** |
-| 1 | Contratos de datos, provider sintetico, store point-in-time | pendiente |
+| 1 | Contratos de datos, provider sintetico, store point-in-time | **completa** |
 | 2 | Capa de opciones y motor de calidad | pendiente |
 | 3 | Motor de superficie de volatilidad | pendiente |
 | 4 | BKM + checkpoint V1 (momentos sinteticos exactos) | pendiente |
@@ -22,7 +22,7 @@ portafolios mediante una extension de Black-Litterman.
 
 ## Puesta en marcha
 
-Requiere [uv](https://docs.astral.sh/uv/) y Python 3.11 o superior.
+Requiere [uv](https://docs.astral.sh/uv/) y Python 3.12 o superior.
 
 ```bash
 git clone https://github.com/Juancal1728/Finvex-FIC.git
@@ -35,6 +35,29 @@ make doctor
 
 En PyCharm: apuntar el interprete del proyecto al `.venv/` que crea `uv`,
 no a un SDK de otro proyecto.
+
+## Checkpoint V1: la referencia contra la que se validara BKM
+
+El proveedor sintetico genera cadenas de opciones a partir de una mezcla de
+lognormales cuyos momentos del log-retorno se conocen en forma cerrada. Eso
+convierte la validacion de BKM en un test **exacto**: no hay ruido, no hay
+huecos, y el valor esperado se deriva a mano en vez de leerse de una fuente.
+
+Con la configuracion predeterminada, a treinta dias:
+
+| Magnitud | Valor de referencia |
+|---|---|
+| Volatilidad implicita anualizada | ~0.19 |
+| Asimetria implicita (MFIS) | ~ -1.7 |
+| Curtosis implicita (MFIK) | ~9.4 |
+| Error de la condicion de martingala | 0 exacto |
+| Residual de paridad put-call | < 1e-8 en toda la cadena |
+| Error del forward extraido por paridad | < 1e-12 relativo |
+
+Las cifras estan en el rango que reporta la literatura para opciones sobre el
+S&P 500. Eso importa: validar el estimador en una region de asimetria -4 que
+los datos reales nunca visitan podria esconder problemas de precision justo
+en el rango que si interesa.
 
 ## Arquitectura
 
